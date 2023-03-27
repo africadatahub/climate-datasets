@@ -13,7 +13,7 @@ api_key =  os.getenv('api_keys')
 resource_id =  os.getenv('resource_id')
 
 # CSV file path and delimiter
-CSV_FILE_PATH = "TAVG-climatology.csv"
+CSV_FILE_PATH =os.getenv('filename')
 CSV_DELIMITER = ","
 
 # Read data from CSV file
@@ -60,33 +60,24 @@ response = requests.post(u, headers={
       "force":True
 
    }))
-
-
-if response.status_code == 200:
-    print('Dataset updated successfully!')
-else:
-    print('Error updating dataset:', response.content)
-
-
-    #return json.loads(response.text)
     
 # Update resource data in CKAN
-for row in data:
-    # Set API endpoint and headers
-    api_endpoint = f"{ckan_api_url}/api/3/action/datastore_upsert"
-    headers = {"Authorization": api_key}        
 
-    # Set payload with updated data
-    payload = {
-        "id": resource_id,
-        "month_number": row["month_number"],
-        "latitude": row["latitude"],
-        "longitude": row["longitude"],
-        "time": row["time"],
-        "climatology": row["climatology"],
-        "force":True
+new_data = {
+    "id": resource_id,
+    "month_number": "month_number",
+    "latitude": "latitude",
+    "longitude": "longitude",
+    "time": "time",
+    "climatology": "climatology"
+}
 
-    }
-    # Make API call to update resource
-    response = requests.post(api_endpoint, headers=headers, json=payload)
-
+headers = {
+    "Authorization": api_key,
+    "Content-Type": "application/json"
+}
+payload = {
+    "resource": new_data
+}
+response = requests.put(ckan_api_url+"/" + "resource_update?id=" + resource_id, headers=headers, json=payload)
+   

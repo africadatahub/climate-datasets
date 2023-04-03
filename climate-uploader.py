@@ -10,6 +10,7 @@ from functools import partial
 load_dotenv()
 
 # Define CKAN API endpoint and your API key]
+fields = []
 csv_path =os.getenv('filename')
 csv_delimiter = ","
 ckan_api_url = os.getenv('ckan_url')
@@ -71,21 +72,7 @@ def preparing_climate_data():
     print('Preparing data...')
     climate_df = pd.DataFrame()
     records = []
-
-    update_resource(df, 'TAVG-climatology.csv', ckan_api_url,resource_id, api_key)
-
-    for row in climate_df:
-
-        records.append({
-            "month_number": row[0],
-            "latitude": row[1],
-            "longitude": row[2],
-            "time": row[3],
-            "climatology": row[4],
-           
-        })
-
-        fields = [
+    fields = [
             { 
                 "id": "month_number",
                 "type": "numeric"
@@ -109,6 +96,20 @@ def preparing_climate_data():
             
         ]
 
+    update_resource(df, 'TAVG-climatology.csv', ckan_api_url,resource_id, api_key)
+
+    for row in climate_df:
+
+        records.append({
+            "month_number": row[0],
+            "latitude": row[1],
+            "longitude": row[2],
+            "time": row[3],
+            "climatology": row[4],
+           
+        })
+
+        
     response = datastore_create(records, fields, ckan_api_url, resource_id, api_key)
     print(response) 
 

@@ -11,11 +11,11 @@ load_dotenv()
 
 # Define CKAN API endpoint and your API key]
 fields = []
-csv_path =os.getenv('filename')
+csv_path =os.getenv('climate_filename')
 csv_delimiter = ","
 ckan_api_url = os.getenv('ckan_url')
 api_key =  os.getenv('api_keys')
-resource_id = os.getenv('resource_id')
+resource_id = os.getenv('climate_resource_id')
 
 def datastore_delete(ckan_api_url, resource_id, api_key):
     print('Deleting datastore for ' + resource_id)

@@ -274,7 +274,7 @@ def preparing_climate_data():
             
         ]
 
-    update_resource(df, 'TAVG-climatology.csv', ckan_api_url,resource_id, api_key)
+    update_resource(df, 'emdat_africa_1992-2023_natural.csv', ckan_api_url,resource_id, api_key)
 
     for row in climate_df:
 

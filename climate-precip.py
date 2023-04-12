@@ -7,7 +7,8 @@ import pandas as pds
 from matplotlib import pyplot as plt
 np.set_printoptions(threshold=np.inf)
 
-file = 'files/Berkeley/gpcc_10_combined.nc'
+
+file='~/dev/climate-datasets/Berkeley/gpcc_10_combined.nc'
 nc = xr.open_dataset(file, decode_times=False)
 nc
 

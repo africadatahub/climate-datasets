@@ -7,35 +7,7 @@ import numpy as np
 import pandas as pd
 np.set_printoptions(threshold=np.inf)
 load_dotenv()
-from helper_function import datastore_delete, datastore_create,update_resource,preparing_precip_data
-
-precip_fields = [
-            { 
-                "id": "time",
-                "type": "numeric"
-            },
-            { 
-                "id": "level",
-                "type": "numeric"
-            },
-            { 
-                "id": "latitude",
-                "type": "numeric"
-            },
-            { 
-                "id": "longitude",
-                "type": "numeric"
-            },
-            { 
-                "id": "precip",
-                "type": "numeric"
-            },
-            { 
-                "id": "month_number",
-                "type": "numeric"
-            }
-            
-        ]
+from helper_function import datastore_delete, datastore_create,update_resource,preparing_precip_data, precip_fields
 
 csv_path =os.getenv('precip_filename')
 csv_delimiter = ","
@@ -84,4 +56,4 @@ preparing_precip_data()
 datastore_delete(ckan_api_url, resource_id, api_key)
 records = preparing_precip_data()
 datastore_create(records, precip_fields, ckan_api_url, resource_id, api_key)
-update_resource(df,csv_path, ckan_api_url, resource_id, api_key)
+update_resource(precip_df,csv_path, ckan_api_url, resource_id, api_key)

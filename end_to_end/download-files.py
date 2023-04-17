@@ -11,6 +11,7 @@ from netCDF4 import Dataset
 import xarray as xr
 import glob
 np.set_printoptions(threshold=np.inf)
+from helper_function import datastore_delete, datastore_create,update_resource,preparing_climate_data,preparing_temp_data
 
 load_dotenv()
 
@@ -179,83 +180,6 @@ for type in ['TAVG','TMIN','TMAX']:
             os.remove('/Users/mahlatsemoloto/dev/climate-datasets/files/' + type + '-' + metric + '-' + str(year) + '.csv')
             os.remove('/Users/mahlatsemoloto/dev/climate-datasets/files/' + type + '-' + metric + '-' + str(year) + '-filtered.csv')
 
-def datastore_delete(ckan_api_url, resource_id, api_key):
-    print('Deleting datastore for ' + resource_id)
-
-    u = ckan_api_url + "/api/3/action/datastore_delete"
-    r = requests.post(u, headers={
-    "X-CKAN-API-Key": api_key,
-    "Accept": "application/json",
-    'Content-Type': 'application/json',
-    }, data=json.dumps({
-        "resource_id": resource_id,
-        "force": "true"
-    }))
-
-    return json.loads(r.text)
-
-def datastore_create(records, fields, ckan_api_url, resource_id, api_key):
-    print('Creating new datastore for ' + resource_id)
-
-    u = ckan_api_url + "/api/3/action/datastore_create"
-    r = requests.post(u, headers={
-    "X-CKAN-API-Key": api_key,
-    "Accept": "application/json",
-    'Content-Type': 'application/json',
-    }, data=json.dumps({
-        "resource_id": resource_id,
-        "records": records,
-        "fields": fields,
-        "force": "true"
-    }))
-    return json.loads(r.text)
-
-def update_resource(df, climate_csv_file, ckan_api_url, resource_id, api_key):
-    
-    df.to_csv(climate_csv_file, index=False)
-    u = ckan_api_url + "/api/3/action/resource_patch"
-    r = requests.post(u, headers={
-    "X-CKAN-API-Key": api_key
-    }, data={
-        "id": resource_id
-    }, files=[('upload', open(climate_csv_file, 'r'))])
-    data_output = json.loads(r.content)
-    print(data_output)
-
-def preparing_climate_data():
-    print('Preparing data...')
-    climate_df = pd.DataFrame()
-    records = []
-   
-    for row in climate_df:
-
-        records.append({
-            "month_number": row[0],
-            "latitude": row[1],
-            "longitude": row[2],
-            "time": row[3],
-            "climatology": row[4],
-                
-            })
-    return records
-
-
-def preparing_temp_data():
-    print('Preparing data...')
-    temp_df = pd.DataFrame()
-    records = []
-    
-    for row in temp_df:
-
-        records.append({
-            "time": row[0],
-            "latitude": row[1],
-            "longitude": row[2],
-            "temperature": row[3],
-                
-            })            
-    return records
-
 for fileinfo in file_info:
     filename = fileinfo.get('filename').split('-')[-1]
 
@@ -268,7 +192,7 @@ for fileinfo in file_info:
         datastore_delete(ckan_api_url, fileinfo.get("resource_id"), api_key)
         records = preparing_temp_data()
         datastore_create(records, temp_fields, ckan_api_url, fileinfo.get("resource_id"), api_key)
-        update_resource(df_climate, os.path.join('files',fileinfo.get("filename")), ckan_api_url,fileinfo.get("resource_id"), api_key)
+        update_resource(df_temp, os.path.join('files',fileinfo.get("filename")), ckan_api_url,fileinfo.get("resource_id"), api_key)
         
 
     if filename == "climatology.csv":

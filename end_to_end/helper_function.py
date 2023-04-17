@@ -1,6 +1,79 @@
 import requests
 import json
 import pandas as pd
+import os
+
+precip_fields = [
+            { 
+                "id": "time",
+                "type": "numeric"
+            },
+            { 
+                "id": "level",
+                "type": "numeric"
+            },
+            { 
+                "id": "latitude",
+                "type": "numeric"
+            },
+            { 
+                "id": "longitude",
+                "type": "numeric"
+            },
+            { 
+                "id": "precip",
+                "type": "numeric"
+            },
+            { 
+                "id": "month_number",
+                "type": "numeric"
+            }
+            
+        ]
+
+temp_fields = [
+            { 
+                "id": "time",
+                "type": "numeric"
+            },
+            { 
+                "id": "latitude",
+                "type": "numeric"
+            },
+            {    
+                "id": "longitude",
+                "type": "numeric"
+            },
+            { 
+                "id": "temperature",
+                "type": "numeric"
+            }       
+                ]
+climate_fields =[
+            { 
+                "id": "month_number",
+                "type": "numeric"
+            },
+            { 
+                "id": "latitude",
+                "type": "numeric"
+            },
+            {    
+                "id": "longitude",
+                "type": "numeric"
+            },
+            { 
+                "id": "time",
+                "type": "numeric"
+            },
+            { 
+                "id": "climatology",
+                "type": "numeric"
+            }
+                    
+                ]
+
+
 
 def datastore_delete(ckan_api_url, resource_id, api_key):
     print('Deleting datastore for ' + resource_id)

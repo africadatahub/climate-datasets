@@ -11,7 +11,7 @@ from netCDF4 import Dataset
 import xarray as xr
 import glob
 np.set_printoptions(threshold=np.inf)
-from helper_function import datastore_delete, datastore_create,update_resource,preparing_climate_data,preparing_temp_data
+from helper_function import datastore_delete, datastore_create,update_resource,preparing_climate_data,preparing_temp_data, climate_fields, temp_fields
 
 load_dotenv()
 
@@ -50,50 +50,6 @@ file_info =[{
     "resource_id": os.getenv('TMIN_temp_resource_id')
 
 }]
-
-
-temp_fields = [
-            { 
-                "id": "time",
-                "type": "numeric"
-            },
-            { 
-                "id": "latitude",
-                "type": "numeric"
-            },
-            {    
-                "id": "longitude",
-                "type": "numeric"
-            },
-            { 
-                "id": "temperature",
-                "type": "numeric"
-            }       
-                ]
-climate_fields =[
-            { 
-                "id": "month_number",
-                "type": "numeric"
-            },
-            { 
-                "id": "latitude",
-                "type": "numeric"
-            },
-            {    
-                "id": "longitude",
-                "type": "numeric"
-            },
-            { 
-                "id": "time",
-                "type": "numeric"
-            },
-            { 
-                "id": "climatology",
-                "type": "numeric"
-            }
-                    
-                ]
-
 urls = [
 
     os.getenv('download_Tavg'),

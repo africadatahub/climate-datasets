@@ -1,0 +1,6 @@
+*.env
+*.csv
+*.txt
+Berkeley/
+files/
+end_to_end/__pycache__
